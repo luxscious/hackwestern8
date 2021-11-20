@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
         position: "relative",
     },
     login: {
+        width:"",
+        height:""
     }
 }));
 
