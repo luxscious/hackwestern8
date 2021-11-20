@@ -6,15 +6,18 @@ import logo from '../assets/jetlaglogo.png'
 
 
 const useStyles = makeStyles((theme) => ({
-
+    navbar:{
+        position:'fixed',
+        width:"100%"
+    }
 }));
 
 function NavigationBar() {
     const classes = useStyles();
-
+        
     return (
         <>
-            <Navbar bg="dark" variant="dark">
+            <Navbar bg="dark" variant="dark" className={classes.navbar}>
                 <Container>
                     <Navbar.Brand href="#home"><img src={logo} alt="logo" /> </Navbar.Brand>
                     <Nav className="me-auto">
