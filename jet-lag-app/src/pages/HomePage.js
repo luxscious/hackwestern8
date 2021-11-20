@@ -7,15 +7,17 @@ import { createPortal } from 'react-dom';
 
 const useStyles = makeStyles((theme) => ({
     siteContainer: {
-        background: "#58607C",
+        backgroundColor: "#58607C",
     },
 }));
 
 function HomePage(){
 const classes = useStyles();
+return(
     <div className={classes.siteContainer}>
         
     </div>
+)
 }
 
 export default HomePage;
