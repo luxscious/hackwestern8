@@ -6,14 +6,14 @@ import '../styles/HomePage.css'
 import { createPortal } from 'react-dom';
 
 const useStyles = makeStyles((theme) => ({
-    homePage: {
+    siteContainer: {
         background: "#58607C",
-    }
+    },
 }));
 
 function HomePage(){
 const classes = useStyles();
-    <div className={classes.homePage}>
+    <div className={classes.siteContainer}>
         
     </div>
 }
