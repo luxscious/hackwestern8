@@ -8,7 +8,13 @@ import logo from '../assets/jetlaglogo.png'
 const useStyles = makeStyles((theme) => ({
     navbar:{
         position:'fixed',
-        width:"100%"
+        width:"100%",
+        zIndex:"4",
+    },
+    list_item:{
+        font:"Open Sans",
+        fontWeight:"bold",
+        color:"white"
     }
 }));
 
@@ -16,18 +22,15 @@ function NavigationBar() {
     const classes = useStyles();
         
     return (
-        <>
-            <Navbar bg="dark" variant="dark" className={classes.navbar}>
-                <Container>
-                    <Navbar.Brand href="#home"><img src={logo} alt="logo" /> </Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#about">About</Nav.Link>
-                    </Nav>
-                </Container>
-            </Navbar>
-        </>
-
+        <Navbar bg="dark" variant="dark" className={classes.navbar}>
+            <Container>
+                <Navbar.Brand href="#home"><img src={logo} alt="logo" /> </Navbar.Brand>
+                <Nav className="me-auto">
+                    <Nav.Link href="#home" className={classes.list_item} >Home</Nav.Link>
+                    <Nav.Link href="#about" className={classes.list_item}>About</Nav.Link>
+                </Nav>
+            </Container>
+        </Navbar>
     )
 }
 
