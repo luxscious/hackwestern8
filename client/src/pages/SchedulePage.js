@@ -6,8 +6,8 @@ import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import useEffect from "react";
-import useNavigationParams from "@react-navigation/native";
+import { useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
 const Separator = styled("div")(
   ({ theme }) => `
   height: ${theme.spacing(3)};
@@ -142,10 +142,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SchedulePage() {
+  const route = useRoute();
   const [currentTMin, setCurrentTMin] = useState(1);
   const [targetTMin, setTargetTMin] = useState(92);
   const [instructions, setInstructions] = useState("");
-  const navParams = useNavigationParams("params");
+  const navParams = route.params;
   const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
   //From form:
@@ -170,13 +171,13 @@ export default function SchedulePage() {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
+        (currTMin + 1) +
+        " and " +
         (currTMin + 4) +
-        " and " +
-        (currTMin + 16) +
         ". <br/> You should not view light between " +
-        (currTMin - 4) +
+        (currTMin - 1) +
         " and " +
-        (currTMin - 16) +
+        (currTMin - 4) +
         "";
       setCurrentTMin(currTMin);
       setTargetTMin(targetTmin);
