@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     borderColor: "#2B2B40",
     marginBottom: 40,
+    borderRadius: 10,
   },
   buttonText: {
     fontSize: 18,
@@ -78,6 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Button2: {
     backgroundColor: "#2B2B40",
+    borderRadius: 10,
     "&:hover": {
       backgroundColor: "white",
       borderColor: "white",
@@ -87,6 +89,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "white",
       borderColor: "white",
       color: "#2B2B40",
+    },
+    "&:focus": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+      outline: 0,
     },
     width: 238,
     height: 52,
@@ -142,7 +150,7 @@ function HomePage() {
           <Button
             className={classes.Button1}
             onClick={() => {
-              navigation.push("/info");
+              navigation.push("Info");
             }}
           >
             <p className={classes.buttonText}>Login</p>
@@ -150,7 +158,7 @@ function HomePage() {
           <Button
             className={classes.Button2}
             onClick={() => {
-              navigation.push("/info");
+              navigation.push("Info");
             }}
           >
             <p className={classes.buttonText}>Sign Up</p>
