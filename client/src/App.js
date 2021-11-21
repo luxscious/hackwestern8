@@ -2,7 +2,7 @@ import NavigationBar from "./components/NavigationBar";
 import HomePage from "./pages/HomePage";
 import InfoPage from "./pages/InfoPage";
 import SchedulePage from "./pages/SchedulePage";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 import { NavigationContainer } from "@react-navigation/native";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -24,7 +24,7 @@ function App() {
     <Router>
       <NavigationContainer linking={linking}>
         <NavigationBar />
-        <Stack.Navigator initialRouteName="home">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Info" component={InfoPage} />
           <Stack.Screen name="Schedule" component={SchedulePage} />
