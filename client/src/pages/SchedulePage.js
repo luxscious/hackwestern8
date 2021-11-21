@@ -9,8 +9,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 
-
-
 const Separator = styled("div")(
   ({ theme }) => `
   height: ${theme.spacing(3)};
@@ -144,12 +142,10 @@ const useStyles = makeStyles((theme) => ({
     //position: 'absolute',
     left: 0,
     top: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-    
-
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 
@@ -161,8 +157,10 @@ export default function SchedulePage() {
   const navParams = route.params;
   const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
+
   useEffect(() => {
     let currTMin = sleepEnd * 4 - 8;
+
     if (tChange >= 0) {
       let targetTmin = currTMin - tChange;
       let instructions =
@@ -242,9 +240,9 @@ export default function SchedulePage() {
 
   return (
     <div className={classes.container}>
-      <Separator/>
+      <Separator />
       <h2>{instructions}</h2>
-      <Separator/>
+      <Separator />
       <Slider
         key={`slider-${currentTMin}`}
         track={false}
@@ -253,11 +251,11 @@ export default function SchedulePage() {
         defaultValue={[currentTMin, targetTMin]}
         marks={marks}
       />
-      <Separator/>
+      <Separator />
       <button class="button" onClick={followPlan}>
         Followed Plan
       </button>
-      <Separator/>
+      <Separator />
       <button class="button" onClick={noFollowPlan}>
         Did Not Follow Plan
       </button>

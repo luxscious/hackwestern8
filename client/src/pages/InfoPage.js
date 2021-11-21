@@ -9,40 +9,39 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopTimePicker from "@mui/lab/DesktopTimePicker";
 import { useNavigation } from "@react-navigation/native";
 import Autocomplete from "react-google-autocomplete";
+
 const useStyles = makeStyles((theme) => ({
-  siteContainer: {
-    backgroundColor: "#58607C",
-    height: 1080,
-    backgroundImage: `url(${background})`,
-    backgroundRepeat: "no-repeat",
-  },
   formFont: {
     fontSize: 14,
     fontFamily: "Open Sans",
-    fontWeight: "Bold",
     color: "#FFFFFF",
     paddingTop: 10,
     paddingBottom: 10,
     paddingRight: 21,
     paddingLeft: 21,
-    textAlign: "center",
+    marginTop: 8,
   },
   input: {
-    width: 347,
+    // width: 347,
+    // height: 30,
     paddingLeft: 70,
+    // marginTop: 10,
   },
   inputContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   textContainer: {
     flex: "col",
     display: "flex",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#4D4C66",
     borderRadius: 10,
+    width: 163,
   },
   container: {
     display: "flex",
@@ -54,19 +53,83 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 256,
     justifyContent: "center",
     borderRadius: 25,
+    alignSelf: "center",
+    zIndex: 3,
   },
   timePicker: {
     backgroundColor: "white",
   },
   confirmButton: {
     backgroundColor: "#4D4C66",
+    width: 224,
+    borderRadius: 25,
+    border: 0,
+
+    display: "flex",
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  bubbles: {
+    position: "fixed",
+    width: "100%",
+    height: "110%",
+  },
+  pageContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  field: {
+    borderRadius: 10,
+    padding: 11,
+    width: 347,
+    fontSize: 14,
+  },
+  daysPrior: {
+    flex: "col",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#4D4C66",
+    borderRadius: 10,
+    width: 163,
+    marginLeft: -220,
+    marginRight: 200,
+  },
+  inputBox: {
+    width: 127,
+    marginLeft: -130,
+  },
+  buttonText: {
+    fontSize: 14,
+    fontFamily: "Open Sans",
+    color: "#FFFFFF",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingRight: 21,
+    paddingLeft: 21,
+    marginTop: 8,
+    marginLeft: 55,
+  },
+  timePickerCSS: {
+    width: 200,
+    margin: 20,
+  },
+  textContainerSleep: {
+    flex: "col",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#4D4C66",
+    borderRadius: 10,
+    width: 163,
+    marginRight: 60,
+    marginLeft: 170,
   },
 }));
 
 var axios = require("axios");
-
-function calculateTimeDiff(loc1, loc2) {}
-
 function InfoPage() {
   let apiKey = "AIzaSyBSWPuO1QeCaZX9c7IgTQarIievmmk7q50";
   const classes = useStyles();
@@ -82,45 +145,63 @@ function InfoPage() {
   const navigation = useNavigation();
 
   return (
-    <div className={classes.siteContainer}>
+    <>
+      {/* // <div className={classes.pageContainer}> */}
+      <img className={classes.bubbles} src={background} />
       <div className={classes.container}>
-        <div className={classes.inputContainer}>
-          <div className={classes.textContainer}>
-            <h1 className={classes.formFont}>First Location</h1>
+        <div className={classes.selection}>
+          <div className={classes.inputContainer}>
+            <div className={classes.textContainer}>
+              <h1 className={classes.formFont}>Starting Location</h1>
+            </div>
+            <div className={classes.input}>
+              <Autocomplete
+                className={classes.field}
+                apiKey={apiKey}
+                onPlaceSelected={(place) => {
+                  setStartLocation(place);
+                }}
+              />
+            </div>
           </div>
-          <div className={classes.input}>
-            <Autocomplete
-              apiKey={apiKey}
-              onPlaceSelected={(place) => {
-                setStartLocation(place);
-              }}
-            />
+        </div>
+        <div className={classes.selection}>
+          <div className={classes.inputContainer}>
+            <div className={classes.textContainer}>
+              <h1 className={classes.formFont}>End Location</h1>
+            </div>
+            <div className={classes.input}>
+              <Autocomplete
+                className={classes.field}
+                apiKey={apiKey}
+                onPlaceSelected={(place) => {
+                  setEndLocation(place);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className={classes.selection}>
+          <div className={classes.inputContainer}>
+            <div className={classes.daysPrior}>
+              <h1 className={classes.formFont}>Days Prior</h1>
+            </div>
+            <div>
+              <input
+                name="daysPrior"
+                type="number"
+                className={classes.inputBox}
+                onChange={(input) => setDaysPrior(input)}
+              />
+            </div>
           </div>
         </div>
         <div className={classes.inputContainer}>
-          <div className={classes.textContainer}>
-            <h1 className={classes.formFont}>End Location</h1>
-          </div>
-          <div className={classes.input}>
-            <Autocomplete
-              apiKey={apiKey}
-              onPlaceSelected={(place) => {
-                setEndLocation(place);
-              }}
-            />
-          </div>
-        </div>
-        <div className={classes.inputContainer}>
-          <div className={classes.textContainer}>
-            <h1 className={classes.formFont}>Days Prior</h1>
-          </div>
-          <div className={classes.input}>
-            <input name="daysPrior" onChange={(input) => setDaysPrior(input)} />
-          </div>
-        </div>
-        <div className={classes.inputContainer}>
-          <div className={classes.textContainer}>
-            <h1 className={classes.formFont}>Sleep Time</h1>
+          <div className={classes.textContainerSleep}>
+            <h1 className={classes.formFont}>
+              Sleep Time <br />
+              (Start, Finish)
+            </h1>
           </div>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopTimePicker
@@ -139,7 +220,6 @@ function InfoPage() {
               value={sleepEndTime}
               onChange={(newValue) => {
                 setSleepEndTime(newValue);
-                // setSleepEndTime(newValue);
               }}
               renderInput={(params) => (
                 <TextField className={classes.timePicker} {...params} />
@@ -196,10 +276,11 @@ function InfoPage() {
             });
           }}
         >
-          <h1 className={classes.formFont}>Confirm</h1>
+          <h1 className={classes.buttonText}>Confirm</h1>
         </button>
       </div>
-    </div>
+    </>
+    // {/* </div> */}
   );
 }
 
