@@ -1,6 +1,7 @@
 import NavigationBar from "./components/NavigationBar";
 import HomePage from "./pages/HomePage";
 import InfoPage from "./pages/InfoPage";
+import SchedulePage from "./pages/SchedulePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
@@ -13,6 +14,7 @@ function App() {
       <Switch>
         <Route path="/" exact component={HomePage} />
         <Route path="/info" exact component={InfoPage} />
+        <Route path="/schedule" exact component={SchedulePage} />
       </Switch>
       {/* <Switch>
         <Route path = '/companies/:companyName' exact component = {Company}/>
