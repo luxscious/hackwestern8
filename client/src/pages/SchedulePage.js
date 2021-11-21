@@ -170,14 +170,14 @@ export default function SchedulePage() {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
-        (currTMin + 4) +
+        ((currTMin + 1)%24) +
         " and " +
-        (currTMin + 16) +
+        ((currTMin + 4)%24) +
         ". <br/> You should not view light between " +
-        (currTMin - 4) +
+        ((currTMin -1)%24) +
         " and " +
-        (currTMin - 16) +
-        "";
+        ((currTMin - 4)%24) +
+        "(all times listed are in miltarty time";
       setCurrentTMin(currTMin);
       setTargetTMin(targetTmin);
       setInstructions(instructions);
