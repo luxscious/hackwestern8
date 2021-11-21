@@ -3,27 +3,33 @@ import HomePage from "./pages/HomePage";
 import InfoPage from "./pages/InfoPage";
 import SchedulePage from "./pages/SchedulePage";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { NavigationContainer } from "@react-navigation/native";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+const Stack = createNativeStackNavigator();
+const linking = {
+  prefixes: ["localhost:3000"],
+  config: {
+    screens: {
+      Home: "/",
+      Info: "/info",
+      Schedule: "/schedule",
+    },
+  },
+};
 
 function App() {
   return (
     <Router>
-      <NavigationBar />
-      <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/info" exact component={InfoPage} />
-        <Route path="/schedule" exact component={SchedulePage} />
-      </Switch>
-      {/* <Switch>
-        <Route path = '/companies/:companyName' exact component = {Company}/>
-      </Switch> */}
-      {/* <Route path="/comparison" exact component = {Comparison} />
-      <Route path="/methodology" exact component = {Methodology}/>
-      <Route path="/brand-breakdown/:companyName" exact component={BrandBreakdown}/>
-      <Route path="/brand-directory" exact render={()=><BrandDirectory/>}/>
-      <Route path="/FAQ" exact render={()=><FAQ/>}/> */}
+      <NavigationContainer linking={linking}>
+        <NavigationBar />
+        <Stack.Navigator initialRouteName="home">
+          <Stack.Screen name="Home" component={HomePage} />
+          <Stack.Screen name="Info" component={InfoPage} />
+          <Stack.Screen name="Schedule" component={SchedulePage} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </Router>
   );
 }

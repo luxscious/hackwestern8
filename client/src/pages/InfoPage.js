@@ -6,8 +6,9 @@ import background from "../assets/Background_Bubbles.svg";
 import TextField from "@mui/material/TextField";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-
 import DesktopTimePicker from "@mui/lab/DesktopTimePicker";
+import { useNavigation } from "@react-navigation/native";
+
 const useStyles = makeStyles((theme) => ({
   siteContainer: {
     backgroundColor: "#58607C",
@@ -64,14 +65,13 @@ const useStyles = makeStyles((theme) => ({
 function confirm() {}
 function InfoPage() {
   let apiKey = "AIzaSyBSWPuO1QeCaZX9c7IgTQarIievmmk7q50";
-
   const classes = useStyles();
   const [firstLocation, setFirstLocation] = useState();
   const [endLocation, setEndLocation] = useState();
   const [daysPrior, setDaysPrior] = useState();
   const [sleepStartTime, setSleepStartTime] = useState("10:00");
   const [sleepEndTime, setSleepEndTime] = useState("10:00");
-
+  const navigation = useNavigation();
   if (firstLocation) {
     console.log(firstLocation);
     // console.log(geocodeByPlaceId(firstLocation.value.place_id));
@@ -143,7 +143,12 @@ function InfoPage() {
             />
           </LocalizationProvider>
         </div>
-        <button className={classes.confirmButton} onClick={confirm}>
+        <button
+          className={classes.confirmButton}
+          onClick={() => {
+            navigation.navigate("Schedule");
+          }}
+        >
           <h1 className={classes.formFont}>Confirm</h1>
         </button>
       </div>

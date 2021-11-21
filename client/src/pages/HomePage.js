@@ -56,7 +56,6 @@ function HomePage() {
   }
 
   function handleSubmit(event) {
-    // navigation.push("/info");
     event.preventDefault();
   }
 
