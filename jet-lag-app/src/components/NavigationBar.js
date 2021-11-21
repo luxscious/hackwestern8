@@ -13,8 +13,12 @@ import logo from "../assets/Logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
-    position: "fixed",
+    // position: "fixed",
     width: "100%",
+  },
+  image: {
+    width: 38,
+    height: 38,
   },
 }));
 
@@ -26,7 +30,7 @@ function NavigationBar() {
       <Navbar bg="dark" variant="dark" className={classes.navbar}>
         <Container>
           <Navbar.Brand href="#home">
-            <img src={logo} alt="logo" />{" "}
+            <img src={logo} alt="logo" className={classes.image} />{" "}
           </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
