@@ -4,10 +4,12 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
+import Button from "@mui/material/Button";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const Separator = styled("div")(
   ({ theme }) => `
@@ -133,19 +135,99 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-function noFollowPlan() {}
-
 const useStyles = makeStyles((theme) => ({
   container: {
-    width: "100%",
-    height: "1080px",
-    //position: 'absolute',
-    left: 0,
-    top: 0,
-    display: "flex",
-    flexDirection: "column",
+    width: "1500px",
+    // height: "1080px",
+    // position: 'absolute',
+    // left: 0,
+    // top: 0,
+    // display: 'flex',
+    // flexDirection: 'column',
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    left: "14%",
+    top: "200px",
+    ransform: "translate(-50%, -50%)",
+  },
+
+  slider: {
+    trackColor: "grey",
+    selectionColor: "black",
+  },
+
+  Button2: {
+    backgroundColor: "#2B2B40",
+    borderRadius: 10,
+    "&:hover": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+    },
+    "&:active": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+    },
+    "&:focus": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+      outline: 0,
+    },
+    width: 238,
+    height: 52,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+    borderColor: "white",
+  },
+  Button1: {
+    backgroundColor: "#2B2B40",
+    borderRadius: 10,
+    "&:hover": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+    },
+    "&:active": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+    },
+    "&:focus": {
+      backgroundColor: "white",
+      borderColor: "white",
+      color: "#2B2B40",
+      outline: 0,
+    },
+    width: 238,
+    height: 52,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+    borderColor: "white",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    paddingTop: "150px",
+    paddingLeft: "190px",
+  },
+  buttonSeparator: {
+    width: 560,
+  },
+  instructions: {
+    font: "Open Sans",
+    fontSize: "35px",
+    fontWeight: "bold",
+    color: "white",
+  },
+  rowDiv: {
+    height: 100,
   },
 }));
 
@@ -157,7 +239,7 @@ export default function SchedulePage() {
   const navParams = route.params;
   const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
-
+  const navigation = useNavigation();
   useEffect(() => {
     let currTMin = sleepEnd * 4 - 8;
 
@@ -241,8 +323,9 @@ export default function SchedulePage() {
   return (
     <div className={classes.container}>
       <Separator />
-      <h2>{instructions}</h2>
+      <h2 className={classes.instructions}>{instructions}</h2>
       <Separator />
+      <div className={classes.rowDiv}></div>
       <Slider
         key={`slider-${currentTMin}`}
         track={false}
@@ -250,15 +333,24 @@ export default function SchedulePage() {
         getAriaValueText={valuetext}
         defaultValue={[currentTMin, targetTMin]}
         marks={marks}
+        className={classes.slider}
+        disabled
       />
       <Separator />
-      <button class="button" onClick={followPlan}>
-        Followed Plan
-      </button>
-      <Separator />
-      <button class="button" onClick={noFollowPlan}>
-        Did Not Follow Plan
-      </button>
+      <div className={classes.buttonContainer}>
+        <button onClick={followPlan} class={classes.Button1}>
+          Followed Plan
+        </button>
+        <div className={classes.buttonSeparator}></div>
+        <button
+          onClick={() => {
+            navigation.push("Info");
+          }}
+          class={classes.Button2}
+        >
+          Did Not Follow Plan
+        </button>
+      </div>
     </div>
   );
 }
