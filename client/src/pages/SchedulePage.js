@@ -149,21 +149,19 @@ export default function SchedulePage() {
   const navParams = route.params;
   const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
-
   useEffect(() => {
     let currTMin = sleepEnd * 4 - 8;
-    console.log(currTMin);
     if (tChange >= 0) {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
-        (currTMin/4 ) +
+        currTMin / 4 +
         " and " +
-        (currTMin/4 + 3) +
+        (currTMin / 4 + 3) +
         ". You should not view light between " +
-        (currTMin/4 - 5) +
+        (currTMin / 4 - 5) +
         " and " +
-        (currTMin/4 - 2) +
+        (currTMin / 4 - 2) +
         "";
 
       setCurrentTMin(currTMin);
@@ -173,16 +171,16 @@ export default function SchedulePage() {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
-        (currTMin/4 -5) +
+        (currTMin / 4 - 5) +
         " and " +
-        (currTMin/4 - 2) +
+        (currTMin / 4 - 2) +
         ". You should not view light between " +
-        (currTMin/4 ) +
+        currTMin / 4 +
         " and " +
-        (currTMin/4 + 3) +
+        (currTMin / 4 + 3) +
         "";
-      console.log(currTMin);
-      console.log(targetTmin);
+      console.log("CURR MIN", currTMin / 4 - 5);
+
       setCurrentTMin(currTMin);
       setTargetTMin(targetTmin);
       setInstructions(instructions);
@@ -194,36 +192,37 @@ export default function SchedulePage() {
   const classes = useStyles();
   const followPlan = () => {
     if (tChange > 0) {
-      setCurrentTMin(currentTMin - 8);
-      console.log(currentTMin);
+      let currentTMinTemp = currentTMin - 8;
+
       let instructions =
         "You should view light between " +
-        (currentTMin/4 -5) +
+        (currentTMinTemp / 4 - 5) +
         " and " +
-        (currentTMin/4 - 2) +
+        (currentTMinTemp / 4 - 2) +
         ". You should not view light between " +
-        (currentTMin/4 ) +
+        currentTMinTemp / 4 +
         " and " +
-        (currentTMin/4 + 3) +
+        (currentTMinTemp / 4 + 3) +
         "";
+      setCurrentTMin(currentTMinTemp);
       setInstructions(instructions);
     }
     if (tChange < 0) {
-      setCurrentTMin(currentTMin + 8);
-      console.log(currentTMin);
+      let currentTMinTemp = currentTMin + 8;
       let instructions =
-      "You should view light between " +
-      (currentTMin/4 -5) +
-      " and " +
-      (currentTMin/4 - 2) +
-      ". You should not view light between " +
-      (currentTMin/4 ) +
-      " and " +
-      (currentTMin/4 + 3) +
-      "";
+        "You should view light between " +
+        (currentTMinTemp / 4 - 5) +
+        " and " +
+        (currentTMinTemp / 4 - 2) +
+        ". You should not view light between " +
+        currentTMinTemp / 4 +
+        " and " +
+        (currentTMinTemp / 4 + 3) +
+        "";
+      setCurrentTMin(currentTMinTemp);
       setInstructions(instructions);
     }
-    if (Math.abs(currentTMin - targetTMin) < 8) {
+    if (Math.abs(currentTMin - targetTMin) <= 8) {
       setInstructions("Congrats! You have met your goal.");
       //Navigate back to info page when modal closes
     }
