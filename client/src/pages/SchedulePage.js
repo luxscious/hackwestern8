@@ -1,187 +1,204 @@
-
-import ReactDOM  from 'react-dom';
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
-
-const Separator = styled('div')(
+import ReactDOM from "react-dom";
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Slider from "@mui/material/Slider";
+import { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import useEffect from "react";
+import useNavigationParams from "@react-navigation/native";
+const Separator = styled("div")(
   ({ theme }) => `
   height: ${theme.spacing(3)};
-`,
+`
 );
 
 const marks = [
   {
     value: 0,
-    label: '12am',
+    label: "12am",
   },
 
   {
     value: 4,
-    label: '1am',
+    label: "1am",
   },
 
   {
     value: 8,
-    label: '2am',
+    label: "2am",
   },
 
   {
     value: 12,
-    label: '3am',
+    label: "3am",
   },
 
   {
     value: 16,
-    label: '4am',
+    label: "4am",
   },
 
   {
     value: 20,
-    label: '5am',
+    label: "5am",
   },
 
   {
     value: 24,
-    label: '6am',
+    label: "6am",
   },
 
   {
     value: 28,
-    label: '7am',
+    label: "7am",
   },
 
   {
     value: 32,
-    label: '8am',
+    label: "8am",
   },
 
   {
     value: 36,
-    label: '9am',
+    label: "9am",
   },
 
   {
     value: 40,
-    label: '10am',
+    label: "10am",
   },
 
   {
     value: 44,
-    label: '11am',
+    label: "11am",
   },
 
   {
     value: 48,
-    label: '12pm',
+    label: "12pm",
   },
 
   {
     value: 52,
-    label: '1pm',
+    label: "1pm",
   },
 
   {
     value: 56,
-    label: '2pm',
+    label: "2pm",
   },
 
   {
     value: 60,
-    label: '3pm',
+    label: "3pm",
   },
   {
     value: 64,
-    label: '4pm',
+    label: "4pm",
   },
   {
     value: 68,
-    label: '5pm',
+    label: "5pm",
   },
   {
     value: 72,
-    label: '6pm',
+    label: "6pm",
   },
   {
     value: 76,
-    label: '7pm',
+    label: "7pm",
   },
   {
     value: 80,
-    label: '8pm',
+    label: "8pm",
   },
   {
     value: 84,
-    label: '9pm',
+    label: "9pm",
   },
   {
     value: 88,
-    label: '10pm',
+    label: "10pm",
   },
   {
     value: 92,
-    label: '11pm',
+    label: "11pm",
   },
-
-
-
-
 ];
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
+function noFollowPlan() {}
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    width: "100%",
+    height: "1080px",
+  },
+}));
 
-
-class SchedulePage extends React.Component {
-    constructor(props)
-    {
-      super(props);
-      this.state =
-      {
-        currTMin: 0,
-        TargetTMin: 0,
-        daysPrior: 0,
-        tChange: 0,
-        sleepEnd: 0,
-
-
-      }
+export default function SchedulePage() {
+  const [currentTMin, setCurrentTMin] = useState(1);
+  const [targetTMin, setTargetTMin] = useState(92);
+  const [instructions, setInstructions] = useState("");
+  const navParams = useNavigationParams("params");
+  const sleepEnd = navParams.sleepEnd;
+  const tChange = navParams.tChange * 4;
+  //From form:
+  //sleepEnd
+  //tChange from difference in time zones
+  const classes = useStyles();
+  const followPlan = () => {
+    if (tChange > 0) {
+      setCurrentTMin(currentTMin - 8);
     }
-
-    followPlan () {
-
+    if (tChange < 0) {
+      setCurrentTMin(currentTMin + 8);
     }
-
-    noFollowPlan (){
-
+    if (Math.abs(currentTMin - targetTMin) < 8) {
+      setInstructions("Congrats! You have met your goal.");
+      //Navigate back to info page when modal closes
     }
-
-
-    render ()
-    {
-        return (
-            <div>
-                  <Slider
-                        track={false}
-                        aria-labelledby="track-false-range-slider"
-                        getAriaValueText={valuetext}
-                        defaultValue={[this.state.currTMin, this.state.TargetTMin]}
-                        marks={marks}
-                    />
-
-            <button class = 'button' onClick = {this.followPlan}>
-                Followed Plan
-            </button>   
-            <button class = 'button' onClick = {this.noFollowPlan}>
-                Did Not Follow Plan
-            </button>   
-            </div>
-        );
+  };
+  useEffect(() => {
+    let currTMin = sleepEnd * 4 - 12;
+    if (tChange >= 0) {
+      let targetTmin = currTMin - tChange;
+      let instructions =
+        "You should view light between " +
+        (currTMin + 4) +
+        " and " +
+        (currTMin + 16) +
+        ". <br/> You should not view light between " +
+        (currTMin - 4) +
+        " and " +
+        (currTMin - 16) +
+        "";
+      setCurrentTMin(currTMin);
+      setTargetTMin(targetTmin);
+      setInstructions(instructions);
     }
+  }, []);
+  return (
+    <div className={classes.container}>
+      <Slider
+        track={false}
+        aria-labelledby="track-false-range-slider"
+        getAriaValueText={valuetext}
+        defaultValue={[currentTMin, targetTMin]}
+        marks={marks}
+      />
+
+      <button class="button" onClick={followPlan}>
+        Followed Plan
+      </button>
+      <button class="button" onClick={noFollowPlan}>
+        Did Not Follow Plan
+      </button>
+    </div>
+  );
 }
-export default SchedulePage;
