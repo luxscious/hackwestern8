@@ -16,21 +16,36 @@ import { createTheme } from "@mui/material/styles";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import React, { useEffect, useState } from "react";
+import signup_back from "../assets/signup-modal.png";
 
 const useStyles = makeStyles((theme) => ({
   siteContainer: {
     backgroundColor: "#58607C",
     height: "100%",
     width: "100%",
+    height: "1080px",
   },
   earthImage: {
-    marginLeft: "153px",
-    marginRight: "165px",
-    marginTop: "272px",
-    marginBottom: "0px",
-    position: "relative",
+    height: "498px",
+    width: "996px",
+    position: "fixed",
+    left: "50%",
+    bottom: "-300px",
+    transform: "translate(-50%, -50%)",
+    margin: "0 auto",
   },
-  login: {},
+  login: {
+    backgroundImage: `url(${signup_back})`,
+    width: "319px",
+    height: "439px",
+    zIndex: "3",
+    position: "fixed",
+    margin: "0",
+    top: "50%",
+    left: "50%",
+    msTransform: "translate(-50%, -50%)",
+    transform: "translate(-50%, -50%)",
+  },
 }));
 
 function HomePage() {
