@@ -147,10 +147,10 @@ export default function SchedulePage() {
   const [targetTMin, setTargetTMin] = useState(92);
   const [instructions, setInstructions] = useState("");
   const navParams = route.params;
-  const sleepEnd = navParams.sleepEnd;
+  //const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
   //From form:
-  //sleepEnd
+  let sleepEnd =7;
   //tChange from difference in time zones
   const classes = useStyles();
   const followPlan = () => {
@@ -163,7 +163,7 @@ export default function SchedulePage() {
     if (Math.abs(currentTMin - targetTMin) < 8) {
       setInstructions("Congrats! You have met your goal.");
       //Navigate back to info page when modal closes
-    }
+    } 
   };
   useEffect(() => {
     let currTMin = sleepEnd * 4 - 12;
@@ -171,13 +171,13 @@ export default function SchedulePage() {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
-        (currTMin + 1) +
+        ((currTMin + 1)%24) +
         " and " +
-        (currTMin + 4) +
+        ((currTMin + 4)%24) +
         ". <br/> You should not view light between " +
-        (currTMin - 1) +
+        ((currTMin - 1)%24) +
         " and " +
-        (currTMin - 4) +
+        ((currTMin - 4)%24) +
         "";
       setCurrentTMin(currTMin);
       setTargetTMin(targetTmin);
