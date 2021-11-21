@@ -21,7 +21,6 @@ import signup_back from "../assets/signup-modal.png";
 const useStyles = makeStyles((theme) => ({
   siteContainer: {
     backgroundColor: "#58607C",
-    height: "100%",
     width: "100%",
     height: "1080px",
   },
@@ -57,6 +56,7 @@ function HomePage() {
   }
 
   function handleSubmit(event) {
+    // navigation.push("/info");
     event.preventDefault();
   }
 
