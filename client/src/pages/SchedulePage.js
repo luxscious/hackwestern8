@@ -8,6 +8,9 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
+
+
+
 const Separator = styled("div")(
   ({ theme }) => `
   height: ${theme.spacing(3)};
@@ -138,6 +141,15 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",
     height: "1080px",
+    //position: 'absolute',
+    left: 0,
+    top: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+    
+
   },
 }));
 
@@ -154,15 +166,15 @@ export default function SchedulePage() {
     if (tChange >= 0) {
       let targetTmin = currTMin - tChange;
       let instructions =
-        "You should view light between " +
+        "Today you should view light between " +
         currTMin / 4 +
         " and " +
         (currTMin / 4 + 3) +
-        ". You should not view light between " +
+        " - you should not view light between " +
         (currTMin / 4 - 5) +
         " and " +
         (currTMin / 4 - 2) +
-        "";
+        ".";
 
       setCurrentTMin(currTMin);
       setTargetTMin(targetTmin);
@@ -170,15 +182,15 @@ export default function SchedulePage() {
     } else {
       let targetTmin = currTMin - tChange;
       let instructions =
-        "You should view light between " +
+        "Today you should view light between " +
         (currTMin / 4 - 5) +
         " and " +
         (currTMin / 4 - 2) +
-        ". You should not view light between " +
+        " - you should not view light between " +
         currTMin / 4 +
         " and " +
         (currTMin / 4 + 3) +
-        "";
+        ".";
       console.log("CURR MIN", currTMin / 4 - 5);
 
       setCurrentTMin(currTMin);
@@ -195,11 +207,11 @@ export default function SchedulePage() {
       let currentTMinTemp = currentTMin - 8;
 
       let instructions =
-        "You should view light between " +
+        "Today you should view light between " +
         (currentTMinTemp / 4 - 5) +
         " and " +
         (currentTMinTemp / 4 - 2) +
-        ". You should not view light between " +
+        " - you should not view light between " +
         currentTMinTemp / 4 +
         " and " +
         (currentTMinTemp / 4 + 3) +
@@ -210,11 +222,11 @@ export default function SchedulePage() {
     if (tChange < 0) {
       let currentTMinTemp = currentTMin + 8;
       let instructions =
-        "You should view light between " +
+        "Today you should view light between " +
         (currentTMinTemp / 4 - 5) +
         " and " +
         (currentTMinTemp / 4 - 2) +
-        ". You should not view light between " +
+        " - you should not view light between " +
         currentTMinTemp / 4 +
         " and " +
         (currentTMinTemp / 4 + 3) +
@@ -230,7 +242,9 @@ export default function SchedulePage() {
 
   return (
     <div className={classes.container}>
+      <Separator/>
       <h2>{instructions}</h2>
+      <Separator/>
       <Slider
         key={`slider-${currentTMin}`}
         track={false}
@@ -239,10 +253,11 @@ export default function SchedulePage() {
         defaultValue={[currentTMin, targetTMin]}
         marks={marks}
       />
-
+      <Separator/>
       <button class="button" onClick={followPlan}>
         Followed Plan
       </button>
+      <Separator/>
       <button class="button" onClick={noFollowPlan}>
         Did Not Follow Plan
       </button>
