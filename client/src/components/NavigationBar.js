@@ -13,7 +13,7 @@ import logo from "../assets/Logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
-    position: "fixed",
+   // position: "fixed",
     width: "100%",
     zIndex: "4",
   },

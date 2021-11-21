@@ -16,114 +16,114 @@ const Separator = styled("div")(
 
 const marks = [
   {
-    value: 0,
+    value: 4,
     label: "12am",
   },
 
   {
-    value: 4,
+    value: 8,
     label: "1am",
   },
 
   {
-    value: 8,
+    value: 12,
     label: "2am",
   },
 
   {
-    value: 12,
+    value: 16,
     label: "3am",
   },
 
   {
-    value: 16,
+    value: 20,
     label: "4am",
   },
 
   {
-    value: 20,
+    value: 24,
     label: "5am",
   },
 
   {
-    value: 24,
+    value: 28,
     label: "6am",
   },
 
   {
-    value: 28,
+    value: 32,
     label: "7am",
   },
 
   {
-    value: 32,
+    value: 36,
     label: "8am",
   },
 
   {
-    value: 36,
+    value: 40,
     label: "9am",
   },
 
   {
-    value: 40,
+    value: 44,
     label: "10am",
   },
 
   {
-    value: 44,
+    value: 48,
     label: "11am",
   },
 
   {
-    value: 48,
+    value: 52,
     label: "12pm",
   },
 
   {
-    value: 52,
+    value: 56,
     label: "1pm",
   },
 
   {
-    value: 56,
+    value: 60,
     label: "2pm",
   },
 
   {
-    value: 60,
+    value: 64,
     label: "3pm",
   },
   {
-    value: 64,
+    value: 68,
     label: "4pm",
   },
   {
-    value: 68,
+    value: 72,
     label: "5pm",
   },
   {
-    value: 72,
+    value: 76,
     label: "6pm",
   },
   {
-    value: 76,
+    value: 80,
     label: "7pm",
   },
   {
-    value: 80,
+    value: 84,
     label: "8pm",
   },
   {
-    value: 84,
+    value: 88,
     label: "9pm",
   },
   {
-    value: 88,
+    value: 92,
     label: "10pm",
   },
   {
-    value: 92,
+    value: 96,
     label: "11pm",
   },
 ];
@@ -151,18 +151,19 @@ export default function SchedulePage() {
   const tChange = navParams.tChange * 4;
 
   useEffect(() => {
-    let currTMin = sleepEnd * 4 - 12;
+    let currTMin = sleepEnd * 4 - 8;
+    console.log(currTMin);
     if (tChange >= 0) {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
-        (currTMin + 1) +
+        (currTMin/4 ) +
         " and " +
-        (currTMin + 4) +
-        ". <br/> You should not view light between " +
-        (currTMin - 1) +
+        (currTMin/4 + 3) +
+        ". You should not view light between " +
+        (currTMin/4 - 5) +
         " and " +
-        (currTMin - 4) +
+        (currTMin/4 - 2) +
         "";
 
       setCurrentTMin(currTMin);
@@ -172,13 +173,13 @@ export default function SchedulePage() {
       let targetTmin = currTMin - tChange;
       let instructions =
         "You should view light between " +
-        (currTMin - 1) +
+        (currTMin/4 -5) +
         " and " +
-        (currTMin - 4) +
-        ". <br/> You should not view light between " +
-        (currTMin + 1) +
+        (currTMin/4 - 2) +
+        ". You should not view light between " +
+        (currTMin/4 ) +
         " and " +
-        (currTMin + 4) +
+        (currTMin/4 + 3) +
         "";
       console.log(currTMin);
       console.log(targetTmin);
@@ -194,9 +195,33 @@ export default function SchedulePage() {
   const followPlan = () => {
     if (tChange > 0) {
       setCurrentTMin(currentTMin - 8);
+      console.log(currentTMin);
+      let instructions =
+        "You should view light between " +
+        (currentTMin/4 -5) +
+        " and " +
+        (currentTMin/4 - 2) +
+        ". You should not view light between " +
+        (currentTMin/4 ) +
+        " and " +
+        (currentTMin/4 + 3) +
+        "";
+      setInstructions(instructions);
     }
     if (tChange < 0) {
       setCurrentTMin(currentTMin + 8);
+      console.log(currentTMin);
+      let instructions =
+      "You should view light between " +
+      (currentTMin/4 -5) +
+      " and " +
+      (currentTMin/4 - 2) +
+      ". You should not view light between " +
+      (currentTMin/4 ) +
+      " and " +
+      (currentTMin/4 + 3) +
+      "";
+      setInstructions(instructions);
     }
     if (Math.abs(currentTMin - targetTMin) < 8) {
       setInstructions("Congrats! You have met your goal.");
@@ -206,6 +231,7 @@ export default function SchedulePage() {
 
   return (
     <div className={classes.container}>
+      <h2>{instructions}</h2>
       <Slider
         key={`slider-${currentTMin}`}
         track={false}
