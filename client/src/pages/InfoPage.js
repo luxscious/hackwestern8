@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import GooglePlacesAutoComplete from "react-google-places-autocomplete";
+
 import { useState } from "react";
 import background from "../assets/Background_Bubbles.svg";
 import TextField from "@mui/material/TextField";
@@ -8,7 +8,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DesktopTimePicker from "@mui/lab/DesktopTimePicker";
 import { useNavigation } from "@react-navigation/native";
-
+import Autocomplete from "react-google-autocomplete";
 const useStyles = makeStyles((theme) => ({
   siteContainer: {
     backgroundColor: "#58607C",
@@ -62,20 +62,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#4D4C66",
   },
 }));
-function confirm() {}
+
+var axios = require("axios");
+
+function calculateTimeDiff(loc1, loc2) {}
+
 function InfoPage() {
   let apiKey = "AIzaSyBSWPuO1QeCaZX9c7IgTQarIievmmk7q50";
   const classes = useStyles();
-  const [firstLocation, setFirstLocation] = useState();
+  const [startLocation, setStartLocation] = useState();
   const [endLocation, setEndLocation] = useState();
   const [daysPrior, setDaysPrior] = useState();
-  const [sleepStartTime, setSleepStartTime] = useState("10:00");
-  const [sleepEndTime, setSleepEndTime] = useState("10:00");
+  const [sleepStartTime, setSleepStartTime] = useState(
+    new Date("2020-01-01 12:00")
+  );
+  const [sleepEndTime, setSleepEndTime] = useState(
+    new Date("2020-01-01 12:00")
+  );
   const navigation = useNavigation();
-  if (firstLocation) {
-    console.log(firstLocation);
-    // console.log(geocodeByPlaceId(firstLocation.value.place_id));
-  }
 
   return (
     <div className={classes.siteContainer}>
@@ -85,11 +89,10 @@ function InfoPage() {
             <h1 className={classes.formFont}>First Location</h1>
           </div>
           <div className={classes.input}>
-            <GooglePlacesAutoComplete
+            <Autocomplete
               apiKey={apiKey}
-              selectProps={{
-                firstLocation,
-                onChange: setFirstLocation,
+              onPlaceSelected={(place) => {
+                setStartLocation(place);
               }}
             />
           </div>
@@ -99,11 +102,10 @@ function InfoPage() {
             <h1 className={classes.formFont}>End Location</h1>
           </div>
           <div className={classes.input}>
-            <GooglePlacesAutoComplete
+            <Autocomplete
               apiKey={apiKey}
-              selectProps={{
-                endLocation,
-                onChange: setEndLocation,
+              onPlaceSelected={(place) => {
+                setEndLocation(place);
               }}
             />
           </div>
@@ -133,9 +135,11 @@ function InfoPage() {
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DesktopTimePicker
+              type="time"
               value={sleepEndTime}
               onChange={(newValue) => {
                 setSleepEndTime(newValue);
+                // setSleepEndTime(newValue);
               }}
               renderInput={(params) => (
                 <TextField className={classes.timePicker} {...params} />
@@ -146,7 +150,50 @@ function InfoPage() {
         <button
           className={classes.confirmButton}
           onClick={() => {
-            navigation.navigate("Schedule");
+            let apiKey = "AIzaSyBSWPuO1QeCaZX9c7IgTQarIievmmk7q50";
+            let timeStamp = (Date.now() || new Date().getTime()) / 1000;
+            let timeZoneApiRequestUrl =
+              "https://maps.googleapis.com/maps/api/timezone/json?location=" +
+              startLocation.geometry.location.lat() +
+              "," +
+              startLocation.geometry.location.lng() +
+              "&timestamp=" +
+              timeStamp +
+              "&key=" +
+              apiKey;
+
+            var config = {
+              method: "get",
+              url: timeZoneApiRequestUrl,
+              headers: {},
+            };
+            let offSet1, offSet2;
+            axios(config).then(function (response) {
+              offSet1 = JSON.stringify(response.data.rawOffset / 3600);
+              timeZoneApiRequestUrl =
+                "https://maps.googleapis.com/maps/api/timezone/json?location=" +
+                endLocation.geometry.location.lat() +
+                "," +
+                endLocation.geometry.location.lng() +
+                "&timestamp=" +
+                timeStamp +
+                "&key=" +
+                apiKey;
+              config = {
+                method: "get",
+                url: timeZoneApiRequestUrl,
+                headers: {},
+              };
+              axios(config).then(function (response) {
+                offSet2 = JSON.stringify(response.data.rawOffset / 3600);
+                let tDiff = offSet2 - offSet1;
+                let params = {
+                  sleepEnd: sleepEndTime.getHours(),
+                  tChange: tDiff,
+                };
+                navigation.navigate("Schedule", params);
+              });
+            });
           }}
         >
           <h1 className={classes.formFont}>Confirm</h1>

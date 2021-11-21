@@ -143,12 +143,50 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SchedulePage() {
   const route = useRoute();
-  const [currentTMin, setCurrentTMin] = useState(1);
-  const [targetTMin, setTargetTMin] = useState(92);
+  const [currentTMin, setCurrentTMin] = useState();
+  const [targetTMin, setTargetTMin] = useState();
   const [instructions, setInstructions] = useState("");
   const navParams = route.params;
   const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
+
+  useEffect(() => {
+    let currTMin = sleepEnd * 4 - 12;
+    if (tChange >= 0) {
+      let targetTmin = currTMin - tChange;
+      let instructions =
+        "You should view light between " +
+        (currTMin + 1) +
+        " and " +
+        (currTMin + 4) +
+        ". <br/> You should not view light between " +
+        (currTMin - 1) +
+        " and " +
+        (currTMin - 4) +
+        "";
+
+      setCurrentTMin(currTMin);
+      setTargetTMin(targetTmin);
+      setInstructions(instructions);
+    } else {
+      let targetTmin = currTMin - tChange;
+      let instructions =
+        "You should view light between " +
+        (currTMin - 1) +
+        " and " +
+        (currTMin - 4) +
+        ". <br/> You should not view light between " +
+        (currTMin + 1) +
+        " and " +
+        (currTMin + 4) +
+        "";
+      console.log(currTMin);
+      console.log(targetTmin);
+      setCurrentTMin(currTMin);
+      setTargetTMin(targetTmin);
+      setInstructions(instructions);
+    }
+  }, []);
   //From form:
   //sleepEnd
   //tChange from difference in time zones
@@ -165,28 +203,11 @@ export default function SchedulePage() {
       //Navigate back to info page when modal closes
     }
   };
-  useEffect(() => {
-    let currTMin = sleepEnd * 4 - 12;
-    if (tChange >= 0) {
-      let targetTmin = currTMin - tChange;
-      let instructions =
-        "You should view light between " +
-        (currTMin + 1) +
-        " and " +
-        (currTMin + 4) +
-        ". <br/> You should not view light between " +
-        (currTMin - 1) +
-        " and " +
-        (currTMin - 4) +
-        "";
-      setCurrentTMin(currTMin);
-      setTargetTMin(targetTmin);
-      setInstructions(instructions);
-    }
-  }, []);
+
   return (
     <div className={classes.container}>
       <Slider
+        key={`slider-${currentTMin}`}
         track={false}
         aria-labelledby="track-false-range-slider"
         getAriaValueText={valuetext}
