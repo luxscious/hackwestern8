@@ -240,9 +240,11 @@ export default function SchedulePage() {
   const sleepEnd = navParams.sleepEnd;
   const tChange = navParams.tChange * 4;
   const navigation = useNavigation();
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
   useEffect(() => {
     let currTMin = sleepEnd * 4 - 8;
-
     if (tChange >= 0) {
       let targetTmin = currTMin - tChange;
       let instructions =
@@ -278,11 +280,9 @@ export default function SchedulePage() {
       setInstructions(instructions);
     }
   }, []);
-  //From form:
-  //sleepEnd
-  //tChange from difference in time zones
+
   const classes = useStyles();
-  const followPlan = () => {
+  const followPlan = async () => {
     if (tChange > 0) {
       let currentTMinTemp = currentTMin - 8;
 
@@ -316,7 +316,8 @@ export default function SchedulePage() {
     }
     if (Math.abs(currentTMin - targetTMin) <= 8) {
       setInstructions("Congrats! You have met your goal.");
-      //Navigate back to info page when modal closes
+      await sleep(3000);
+      navigation.push("Info");
     }
   };
 
